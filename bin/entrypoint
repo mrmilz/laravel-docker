@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ "$APP_ENV" == "production" ]; then
+    phpenmod -v 7.2 -s ALL newrelic
+fi
+
+if [ "$APP_ENV" == "local" ]; then
+    phpenmod -v 7.2 -s ALL xdebug
+fi
+
+exec "$@"

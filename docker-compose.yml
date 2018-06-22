@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  web:
+    build: .
+    environment:
+      APP_ENV: local
+      XDEBUG_CONFIG: remote_enable=1
+      PHP_IDE_CONFIG: serverName=localhost
+    ports:
+      - 8080:80
+    volumes:
+      - .:/app
+    tmpfs:
+      - /app/storage/framework/cache:size=50m
+      - /app/storage/framework/sessions:size=10m
+    links:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    command: mysqld --user=root --verbose --skip-sync-frm --innodb_flush_log_at_trx_commit=0 --innodb-support-xa=0 --bind-address=0.0.0.0 --query-cache-type=1
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myapp
+      MYSQL_USER: myapp
+      MYSQL_PASSWORD: myapp
